@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #050912;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --neon-blue: #2547f4;
+  --neon-violet: #8b5cf6;
+  --neon-green: #10b981;
+  --neon-red: #ef4444;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --font: 'Space Grotesk', sans-serif;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glass card */
+.glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+}
+
+/* Neon glow helpers */
+.glow-blue   { box-shadow: 0 0 18px rgba(37, 71, 244, 0.45); }
+.glow-violet { box-shadow: 0 0 18px rgba(139, 92, 246, 0.45); }
+.glow-green  { box-shadow: 0 0 18px rgba(16, 185, 129, 0.45); }
+.glow-red    { box-shadow: 0 0 18px rgba(239, 68, 68, 0.45); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
