@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
@@ -5,42 +9,93 @@
 }
 
 :root {
-  --bg-primary: #050912;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --neon-blue: #2547f4;
-  --neon-violet: #8b5cf6;
-  --neon-green: #10b981;
-  --neon-red: #ef4444;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --font: 'Space Grotesk', sans-serif;
+  /* Common Tokens */
+  --color-primary: #7C3AED;
+  --color-primary-light: #A78BFA;
+  --color-emerald: #10B981;
+  --radius-pill: 9999px;
+  --radius-xl: 1.5rem;
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light Mode Variables */
+:root[data-theme='light'] {
+  --bg-app: #F0F2F5;
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-sidebar: #FFFFFF;
+  --text-main: #1E293B;
+  --text-dim: #64748B;
+  --border-subtle: rgba(0, 0, 0, 0.05);
+
+  /* Neomorphism Light */
+  --shadow-raised: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+  --shadow-inset: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+  --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+/* Dark Mode Variables (Default) */
+:root,
+:root[data-theme='dark'] {
+  --bg-app: #0F0821;
+  --bg-card: rgba(26, 15, 59, 0.4);
+  --bg-sidebar: #090514;
+  --text-main: #FFFFFF;
+  --text-dim: #94A3B8;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+
+  /* Neomorphism / Glass Dark */
+  --shadow-raised: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(124, 58, 237, 0.1);
+  --shadow-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -1px -1px 2px rgba(255, 255, 255, 0.05);
+  --shadow-glow: 0 0 25px rgba(124, 58, 237, 0.3);
 }
 
 body {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font);
+  background: var(--bg-app);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
-  overflow-x: hidden;
+  transition: background 0.5s ease, color 0.5s ease;
 }
 
-/* Glass card */
+/* UI KIT: Soft Glass Card */
 .glass {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
 }
 
-/* Neon glow helpers */
-.glow-blue   { box-shadow: 0 0 18px rgba(37, 71, 244, 0.45); }
-.glow-violet { box-shadow: 0 0 18px rgba(139, 92, 246, 0.45); }
-.glow-green  { box-shadow: 0 0 18px rgba(16, 185, 129, 0.45); }
-.glow-red    { box-shadow: 0 0 18px rgba(239, 68, 68, 0.45); }
+/* UI KIT: Buttons */
+.btn-pill {
+  border-radius: var(--radius-pill);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+}
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+.btn-primary {
+  background: var(--color-primary);
+  box-shadow: var(--shadow-glow-purple);
+}
+
+.btn-primary:hover {
+  background: #8B5CF6;
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(124, 58, 237, 0.5);
+}
+
+/* Custom Scrollbar from Kit Aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
