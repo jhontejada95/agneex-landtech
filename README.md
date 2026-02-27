@@ -35,7 +35,16 @@ Anclaje de la "Verdad Legal" en la red **Arbitrum Sepolia**:
 
 ## 📊 Flujos de Proceso
 
-### A. Ingesta y Análisis Inicial
+### A. Onboarding y Navegación (Landing to App)
+El flujo de entrada comienza en la **Landing Page**, donde el usuario selecciona un nivel de suscripción, lo que determina su experiencia de registro y su rol dentro de la plataforma principal:
+
+- **Plan Starter (Gratis)**: Registro Directo ➔ Redirección al *User Dashboard* (Rol: Cliente, Límite: 3 Docs).
+- **Plan Professional / Business**: Registro ➔ *Pasarela de Pagos Simulada* ➔ Redirección al *User Dashboard* (Rol: Analista/Admin, Límites ampliados).
+- **Plan Enterprise**: Formulario de Contacto Corporativo ➔ Integración Offline.
+
+**Conexión con la Plataforma:** Al completar exitosamente el registro o pago, la interfaz enruta al usuario instantáneamente al ecosistema central (`UserDashboard`). Este panel adapta dinámicamente las métricas de consumo mensual de IA, las oportunidades estratégicas (CAPEX) y las vistas habilitadas según el plan adquirido previamente.
+
+### B. Ingesta y Análisis Inicial
 ```mermaid
 graph TD
     A[Carga Documental] --> B{Motor OCR}
@@ -46,7 +55,7 @@ graph TD
     E -->|< 0.85| G[Panel HITL / Revisión Humana]
 ```
 
-### B. Validación Territorial y Notarización Web3
+### C. Validación Territorial y Notarización Web3
 ```mermaid
 graph LR
     H[Expediente Aprobado] --> I[Consulta API UPME]
@@ -70,10 +79,13 @@ graph LR
 
 ## 🎮 Guía de la Demo
 
-1. **Login:** Accede con `demo@agneex.com` / `agneex2025`.
-2. **Ingesta:** Carga un PDF en el módulo `Subir Archivo`.
-3. **Validación:** Observa el análisis de linderos y el estado de la **UPME**.
-4. **Blockchain:** Ejecuta la notarización y verifica el hash en Arbiscan.
+1. **Onboarding:** Explora los planes en la pantalla principal y selecciona uno. 
+    - *Tip: Para acceso rápido, selecciona "Starter" y completa el registro simulado.*
+    - *Tip alternativo: Haz clic en "Login" en la barra de navegación usando `demo@agneex.com` / `agneex2025`.*
+2. **Dashboard:** Revisa el panel de control de usuario y las métricas de consumo de tu Tier.
+3. **Ingesta:** Haz clic en "Nuevo Análisis" y carga un PDF (ej. Escritura de Compraventa) en el módulo `Subir Archivo`.
+4. **Validación:** Observa el análisis de linderos extraído por la IA y el cruce automatizado con la **UPME**.
+5. **Blockchain:** Ejecuta la notarización (gasless) y verifica el hash de inmutabilidad en Arbiscan.
 
 ---
 
