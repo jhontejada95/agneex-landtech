@@ -2,12 +2,15 @@ import React from 'react';
 import { User, CreditCard, BarChart3, Settings, LogOut, ShieldCheck, Zap, Globe, FileText, ChevronRight } from 'lucide-react';
 
 const UserDashboard = ({ user, onLogout, onNavigate }) => {
-    const usagePercentage = (user.docsUsed / user.docsLimit) * 100;
+    const docsUsed = user?.docsUsed || 0;
+    const docsLimit = user?.docsLimit || (user?.plan === 'starter' ? 3 : 100);
+    const tier = user?.tier || user?.plan || 'starter';
+    const usagePercentage = (docsUsed / docsLimit) * 100;
 
     const stats = [
-        { label: 'Ingestas Realizadas', value: user.docsUsed, icon: FileText, color: 'text-indigo-500' },
+        { label: 'Ingestas Realizadas', value: docsUsed, icon: FileText, color: 'text-indigo-500' },
         { label: 'Blockchain Notaria', value: 12, icon: ShieldCheck, color: 'text-emerald-500' },
-        { label: 'Tier Actual', value: user.tier, icon: Zap, color: 'text-amber-500' },
+        { label: 'Tier Actual', value: tier, icon: Zap, color: 'text-amber-500' },
     ];
 
     return (
@@ -58,7 +61,7 @@ const UserDashboard = ({ user, onLogout, onNavigate }) => {
                             <BarChart3 className="w-6 h-6 mr-3 text-indigo-500" /> CONSUMO DE RECURSOS
                         </h3>
                         <span className="text-xs font-black px-3 py-1 glass rounded-full text-indigo-500 border-indigo-500/20">
-                            TIER {user.tier.toUpperCase()}
+                            TIER {String(tier).toUpperCase()}
                         </span>
                     </div>
 

@@ -65,25 +65,30 @@ class User(Base):
     tier = Column(String, default="Starter")
     docs_used = Column(Integer, default=0)
     docs_limit = Column(Integer, default=3)
+    role = Column(String, default="Client") # "Admin", "Analyst", "Client"
 
 Base.metadata.create_all(bind=engine)
 
-# Init demo user if not exists
-DEMO_EMAIL = os.getenv("DEMO_USER_EMAIL", "demo@agneex.com")
-DEMO_PASSWORD = os.getenv("DEMO_USER_PASSWORD", "agneex2025")
+# Init test users if they don't exist
+TEST_USERS = [
+    {"email": "admin@agneex.com", "password": "admin123", "name": "Administrador", "role": "Admin", "tier": "Premium"},
+    {"email": "analista@agneex.com", "password": "analista123", "name": "Analista Jurídico", "role": "Analyst", "tier": "Professional"},
+    {"email": "cliente@agneex.com", "password": "cliente123", "name": "Cliente Demo", "role": "Client", "tier": "Starter"}
+]
 
 db = SessionLocal()
-if not db.query(User).filter(User.email == DEMO_EMAIL).first():
-    demo_user = User(
-        email=DEMO_EMAIL, 
-        password=DEMO_PASSWORD, 
-        name="Usuario Demo", 
-        tier="Professional", 
-        docs_used=42, 
-        docs_limit=100
-    )
-    db.add(demo_user)
-    db.commit()
+for u in TEST_USERS:
+    if not db.query(User).filter(User.email == u["email"]).first():
+        new_user = User(
+            email=u["email"],
+            password=u["password"],
+            name=u["name"],
+            role=u["role"],
+            tier=u["tier"],
+            docs_limit=100 if u["role"] != "Client" else 3
+        )
+        db.add(new_user)
+db.commit()
 db.close()
 
 class LoginRequest(BaseModel):
@@ -223,15 +228,16 @@ def read_root():
 
 @app.post("/v1/login")
 async def login(req: LoginRequest, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == req.email).first()
-    if not user or user.password != req.password:
+    user = db.query(User).filter(User.email == req.email, User.password == req.password).first()
+    if not user:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     return {
-        "name": user.name,
         "email": user.email,
+        "name": user.name,
+        "role": user.role,
         "tier": user.tier,
-        "docsUsed": user.docs_used,
-        "docsLimit": user.docs_limit
+        "docs_used": user.docs_used,
+        "docs_limit": user.docs_limit
     }
 
 @app.get("/v1/user/usage")

@@ -1,31 +1,51 @@
 import React, { useState } from 'react';
 import { Lock, Mail, Eye, EyeOff, Loader2, ShieldCheck } from 'lucide-react';
 
-const Login = ({ onLogin }) => {
-    const [email, setEmail] = useState('demo@agneex.com');
-    const [password, setPassword] = useState('agneex2025');
+const Login = ({ onLogin, onBack }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const API_BASE_URL = window.location.hostname === 'localhost'
+        ? 'http://localhost:8000'
+        : '';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError('');
 
-        // Simulación de login (será reemplazado por llamada real /v1/login)
-        setTimeout(() => {
-            if (email === 'demo@agneex.com' && password === 'agneex2025') {
-                onLogin({ name: 'Usuario Demo', email, tier: 'Professional', docsUsed: 42, docsLimit: 100 });
-            } else {
-                setError('Credenciales inválidas. Intenta demo@agneex.com / agneex2025');
+        try {
+            const response = await fetch(`${API_BASE_URL}/v1/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.detail || 'Error al iniciar sesión');
             }
+
+            const userData = await response.json();
+            onLogin(userData);
+        } catch (err) {
+            setError(err.message);
+        } finally {
             setIsLoading(false);
-        }, 1500);
+        }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-app transition-colors duration-500">
+        <div className="min-h-screen flex items-center justify-center p-6 bg-app transition-colors duration-500 relative">
+            <button
+                onClick={onBack}
+                className="absolute top-8 left-8 text-dim hover:text-main font-bold flex items-center gap-2 transition-colors"
+            >
+                ← VOLVER
+            </button>
             <div className="w-full max-w-md space-y-8 animate-fade-in">
                 <div className="text-center">
                     <div className="inline-flex p-4 rounded-3xl glass mb-6 shadow-glow">
