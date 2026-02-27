@@ -69,11 +69,14 @@ class User(Base):
 Base.metadata.create_all(bind=engine)
 
 # Init demo user if not exists
+DEMO_EMAIL = os.getenv("DEMO_USER_EMAIL", "demo@agneex.com")
+DEMO_PASSWORD = os.getenv("DEMO_USER_PASSWORD", "agneex2025")
+
 db = SessionLocal()
-if not db.query(User).filter(User.email == "demo@agneex.com").first():
+if not db.query(User).filter(User.email == DEMO_EMAIL).first():
     demo_user = User(
-        email="demo@agneex.com", 
-        password="agneex2025", 
+        email=DEMO_EMAIL, 
+        password=DEMO_PASSWORD, 
         name="Usuario Demo", 
         tier="Professional", 
         docs_used=42, 
@@ -246,7 +249,7 @@ async def get_usage(email: str, db: Session = Depends(get_db)):
 async def ingest_document(
     file: UploadFile = File(...), 
     selected_categories: str = Form("[]"),
-    user_email: str = Form("demo@agneex.com"), # Default for demo
+    user_email: str = Form(DEMO_EMAIL), # Use constant
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(User.email == user_email).first()
