@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+python-multipart
+PyPDF2
+sqlalchemy
+web3
+python-dotenv
